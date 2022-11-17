@@ -3,6 +3,7 @@
 // import {chats} from "./data/data";
 
 const express = require("express");
+const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 const {chats} = require("./data/data");
 const app = express();
@@ -18,4 +19,7 @@ app.get("/api/chat/:id",(req,res)=>{
     
 })
 
-app.listen(5000,console.log(`server running on port ${PORT}`));
+// app.listen(5000,console.log(`server running on port ${PORT}`));
+ mongoose.connect('mongodb://0.0.0.0:27017/chat',{useNewUrlParser:true,useUnifiedTopology:true})
+            .then(()=> app.listen(PORT,()=>{console.log(`server running on port ${PORT}`);}))
+            .catch((error)=>{console.log(error.message);});

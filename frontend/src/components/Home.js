@@ -5,8 +5,8 @@ import Signup from './Authentication/Signup';
 
 const Home = () => {
   return (
-    <Container>
-      <Box d="flex" justifyContent="center" p={3} bg={"white"} w="100%" m="400px 0 15px 0" borderRadius="lg" borderWidth="1px">
+    <Container maxW="xl" centerContent>
+      <Box display="flex" justifyContent="center" p={3} bg={"white"} w="100%" m="40px 0 15px 0" borderRadius="lg" borderWidth="1px">
           <Text fontSize="4xl" fontFamily="work sans" color="black" >Chat App</Text>
       </Box>
       <Box bg={"white"} w="100%" p={4} borderRadius="lg" color={"black"} borderWidth="1px " >
@@ -17,14 +17,14 @@ const Home = () => {
           </TabList>
           <TabPanels>
             <TabPanel>
-              <p>
+              <span>
                 <Login />
-              </p>
+              </span>
             </TabPanel>
             <TabPanel>
-              <p>
+              <span>
                 <Signup />
-              </p>
+              </span>
             </TabPanel>
           </TabPanels>
         </Tabs>
