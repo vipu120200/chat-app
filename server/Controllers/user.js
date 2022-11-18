@@ -30,7 +30,7 @@ export const signup = async (req , res) => {
 }
 
 export const signin = async (req , res) => {
-    const {email,password}=req.body;
+    const {email,password}=req.body;[]
     try{
         const userExist = await UserModel.findOne({email});
         if(!userExist) res.send(404).json({message:"User does'nt Exist!"});
@@ -46,6 +46,20 @@ export const signin = async (req , res) => {
     {
         res.status(500).json({message:"something went wrong"});
     }
+    
+
+}
+export const allUsers = async (req , res) => {
+    const searchQuery = req.query.search;
+
+    try{
+    const keyword = new RegExp(searchQuery,'i');
+    const users = await UserModel.find({ $or:[{name},{email}]}).find({_id:{$ne:req.user._id}});
+
+    res.status(200).json({data:users});
+   }catch(err){
+    res.status(404).json({message:err.message});
+   }
     
 
 }

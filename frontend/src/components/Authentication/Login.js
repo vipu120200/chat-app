@@ -16,7 +16,7 @@ const Login = () => {
         email:'',
         password:'',
     });
-    const loggedIn = useSelector(state.authData);
+    const authData = useSelector((state)=>state.authData);
 
     const [show,setShow] = useState(false);
      const toast = useToast();
@@ -43,17 +43,8 @@ const Login = () => {
             return;
         }
           dispatch(signin(formData,history));
-          if(loggedIn)
+          if(!authData)
           {
-              toast({
-                    title:"Login Succesfull",
-                    status:"success",
-                    duration:5000,
-                    isClosable:true,
-                    position:"bottom",
-                    });
-                }
-                else{
               toast({
                     title:"Invalid Credentials",
                     status:"danger",
@@ -62,19 +53,29 @@ const Login = () => {
                     position:"bottom",
                     });
           }
+            else{
+              toast({
+                    title:"Login Succesfull",
+                    status:"success",
+                    duration:5000,
+                    isClosable:true,
+                    position:"bottom",
+                    });
+                }
+          
     }
    
      return (
        <VStack spacing="5px">
            <FormControl id='email' isRequired>
                <FormLabel>Email</FormLabel>
-               <Input placeholder="Enter Your Email" onChange={ (e) => setFormData({...formData, email:e.target.value})} />
+               <Input placeholder="Enter Your Email" value={formData.email} onChange={ (e) => setFormData({...formData, email:e.target.value})} />
            </FormControl>
    
            <FormControl id='password' isRequired>
                <FormLabel>Password</FormLabel>
                <InputGroup>
-                   <Input type={show ? 'text' :'password'} placeholder="Enter Your New Password" onChange={ (e) => setFormData({...formData, password:e.target.value})} />
+                   <Input type={show ? 'text' :'password'} placeholder="Enter Your Password" value={formData.password} onChange={ (e) => setFormData({...formData, password:e.target.value})} />
                    <InputRightElement width="4.5rem">
                    <Button h="1.7rem" size="sm" onClick={handleClick}>
                        {show ? "Hide" : "Show"}

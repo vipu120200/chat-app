@@ -4,6 +4,7 @@ import cors from 'cors';
 import dotenv  from "dotenv";
 import chats from "./data/data.js";
 import userRoutes from './Routes/user.js';
+import chatRoutes from './Routes/chat.js';
 import UserModel from "./models/UserModel.js";
 
 
@@ -22,6 +23,7 @@ dotenv.config();
 const PORT = process.env.PORT || 5000;
 
 app.use('/user',userRoutes);
+app.use('/chat',chatRoutes);
  
 //  console.log(UserModel.find({}));
 
