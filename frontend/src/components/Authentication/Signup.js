@@ -3,41 +3,90 @@ import { VStack } from '@chakra-ui/layout';
 import { Button } from '@chakra-ui/react'
 import { Input, InputGroup, InputRightElement } from '@chakra-ui/input';
 import React,{useState} from 'react'
+import FileBase from 'react-file-base64';
+import { useToast } from '@chakra-ui/react'
+import {useNavigate} from 'react-router-dom';
+import{signup} from '../../action/auth';
+import {useDispatch} from 'react-redux';
+
 
 const Signup = () => {
- const [name,setName] = useState();
- const [email,setEmail] = useState();
- const [password,setPassword] = useState();
- const [confirmPassword,setConfirmPassword] = useState();
- const [pic,setPic] = useState();
+//  const [name,setName] = useState();
+//  const [email,setEmail] = useState();
+//  const [password,setPassword] = useState();
+//  const [confirmPassword,setConfirmPassword] = useState();
+//  const [pic,setPic] = useState();
+ const [formData,setFormData] = useState({
+        name:'',
+        email:'',
+        password:'',
+        confirmPassword:'',
+        pic:''
+    });
  const [show,setShow] = useState(false);
+ const toast = useToast()
+ const history = useNavigate();
+  const dispatch = useDispatch();
 
  const handleClick =() =>{
     setShow(!show);
  }
- const postDetails =(pics) =>{
-    
- }
- const submitHandler =() =>{
-    
+ 
+
+
+
+ const submitHandler = async (e) =>{
+    e.preventDefault();
+    const {name,email,password,pic,confirmPassword} = formData;
+
+    if(!name || !email || !password || !confirmPassword)
+    {
+        toast({
+            title:"Please Fill all the fields",
+            status:"warning",
+            duration:5000,
+            isClosable:true,
+            position:"bottom"
+        });
+        return;
+    }
+    if(password !== confirmPassword)
+    {
+        toast({
+            title:"Password does'nt match with confirm password",
+            status:"warning",
+            duration:5000,
+            isClosable:true,
+            position:"bottom"
+        });
+        return;
+    }
+    dispatch(signup(formData,history));
+    toast({
+            title:"Registration Succesfull",
+            status:"success",
+            duration:5000,
+            isClosable:true,
+            position:"bottom",
+        });
  }
 
   return (
     <VStack spacing="5px">
         <FormControl id='name' isRequired>
             <FormLabel>Name</FormLabel>
-            <Input placeholder="Enter Your Name" onChange={(e)=>setName(e.target.value)} />
+            <Input placeholder="Enter Your Name" onChange={ (e) => setFormData({...formData, name:e.target.value})} />
         </FormControl>
 
         <FormControl id='email' isRequired>
             <FormLabel>Email</FormLabel>
-            <Input placeholder="Enter Your Email" onChange={(e)=>setEmail(e.target.value)} />
+            <Input placeholder="Enter Your Email" onChange={ (e) => setFormData({...formData, email:e.target.value})} />
         </FormControl>
 
         <FormControl id='password' isRequired>
             <FormLabel>Password</FormLabel>
             <InputGroup>
-                <Input type={show ? 'text' :'password'} placeholder="Enter Your New Password" onChange={(e)=>setPassword(e.target.value)} />
+                <Input type={show ? 'text' :'password'} placeholder="Enter Your New Password" onChange={ (e) => setFormData({...formData, password:e.target.value})} />
                 <InputRightElement width="4.5rem">
                 <Button h="1.7rem" size="sm" onClick={handleClick}>
                     {show ? "Hide" : "Show"}
@@ -48,9 +97,9 @@ const Signup = () => {
         <FormControl id='confirmPassword' isRequired>
             <FormLabel>Confirm Password</FormLabel>
             <InputGroup>
-                <Input type={show ? 'text' :'password'} placeholder="Confirm Your New Password" onChange={(e)=>setConfirmPassword(e.target.value)} />
+                <Input type={show ? 'text' :'password'} placeholder="Confirm Your New Password" onChange={ (e) => setFormData({...formData, confirmPassword:e.target.value})} />
                 <InputRightElement width="4.5rem">
-                <Button h="1.7rem" size="sm" onClick={handleClick}>
+                <Button h="1.7rem" size="sm" onClick={ (e) => setFormData({...formData, password:e.target.value})}>
                     {show ? "Hide" : "Show"}
                 </Button>    
                 </InputRightElement>
@@ -59,12 +108,7 @@ const Signup = () => {
         <FormControl id='pic' isRequired>
             <FormLabel>Upload Your Picture</FormLabel>
             <InputGroup>
-                <Input type={'file'} p={1.5} accept="images/*" onChange={(e)=>postDetails(e.target.files[0])} />
-                <InputRightElement width="4.5rem">
-                <Button h="1.7rem" size="sm" onClick={handleClick}>
-                    {show ? "Hide" : "Show"}
-                </Button>    
-                </InputRightElement>
+                <FileBase type="file" multiple={false} onDone={({ base64 }) => setFormData({ ...formData, pic: base64 })} />
             </InputGroup>
         </FormControl>
 

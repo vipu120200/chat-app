@@ -1,23 +1,29 @@
-// import express  from "express";
-// import dotenv  from "dotenv";
-// import {chats} from "./data/data";
+import express  from "express";
+import mongoose from 'mongoose';
+import cors from 'cors';    
+import dotenv  from "dotenv";
+import chats from "./data/data.js";
+import userRoutes from './Routes/user.js';
+import UserModel from "./models/UserModel.js";
 
-const express = require("express");
-const mongoose = require("mongoose");
-const dotenv = require("dotenv");
-const {chats} = require("./data/data");
+
+// const express = require("express");
+// const mongoose = require("mongoose");
+// const dotenv = require("dotenv");
+// const {chats} = require("./data/data");
+// const userRoutes = require("./Routes/user")
+
+
+
 const app = express();
+app.use(cors());
+app.use(express.json()); //to accept json data
 dotenv.config();
 const PORT = process.env.PORT || 5000;
 
-app.get("/api/chat",(req,res)=>{
-    res.send(chats);
-})
-app.get("/api/chat/:id",(req,res)=>{
-    const singleChat = chats.find((c)=> c._id === req.params.id);
-    res.send(singleChat);
-    
-})
+app.use('/user',userRoutes);
+ 
+//  console.log(UserModel.find({}));
 
 // app.listen(5000,console.log(`server running on port ${PORT}`));
  mongoose.connect('mongodb://0.0.0.0:27017/chat',{useNewUrlParser:true,useUnifiedTopology:true})
