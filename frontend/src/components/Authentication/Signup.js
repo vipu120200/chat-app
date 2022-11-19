@@ -4,7 +4,7 @@ import { Button } from '@chakra-ui/react'
 import { Input, InputGroup, InputRightElement } from '@chakra-ui/input';
 import React,{useState} from 'react'
 import FileBase from 'react-file-base64';
-import { useToast } from '@chakra-ui/react'
+import { useToast } from '@chakra-ui/react';
 import {useNavigate} from 'react-router-dom';
 import{signup} from '../../action/auth';
 import {useDispatch} from 'react-redux';

@@ -50,17 +50,29 @@ export const signin = async (req , res) => {
 
 }
 export const allUsers = async (req , res) => {
-    const searchQuery = req.query.search;
-
-    try{
-    const keyword = new RegExp(searchQuery,'i');
-    const users = await UserModel.find({ $or:[{name},{email}]}).find({_id:{$ne:req.user._id}});
-
-    res.status(200).json({data:users});
-   }catch(err){
-    res.status(404).json({message:err.message});
-   }
+//     const searchQuery = req.query.search;
     
+//     try{
+//         const keyword = new RegExp(searchQuery,'i');
+//         console.log(keyword);   
+//         const users = await UserModel.find({ $or:[{name},{email}]});
+
+//     res.status(200).json({data:users});
+//    }catch(err){
+//     res.status(404).json({message:err.message});
+//    }
+      const keyword = req.query.search
+        ? {
+        $or: [
+          { name: { $regex: req.query.search, $options: "i" } },
+          { email: { $regex: req.query.search, $options: "i" } },
+        ],
+      }
+        : {};
+
+    const users = await UserModel.find(keyword);
+    console.log(users);
+    res.send(users);
 
 }
 
