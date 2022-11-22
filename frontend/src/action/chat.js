@@ -1,15 +1,16 @@
 import * as api from '../api';
 
-export const searchUser = (search,history) =>async (dispatch)=>{
+export const findChat = (id,history) =>async (dispatch)=>{
    
     try{
-        const {data} = await api.searchUser(search);
-        dispatch({type:'FETCH_BY_SEARCH',payload:{data}});
+        const {data} = await api.searchUser(id);
+        // console.log(data);
+        dispatch({type:'FETCH_USER_CHAT',payload:{data}});
 
-        history('/chat');
+        // history('/chat');
     }
     catch(err){
         console.log(err.message);
     }
 }
-
+    

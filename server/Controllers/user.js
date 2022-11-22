@@ -18,7 +18,6 @@ export const signup = async (req , res) => {
         if(password !== confirmPassword) return res.status(400).json({message:"Password Do'nt Match"});
         const hashedPassword = await bcrypt.hash(password,12);
         const result = UserModel.create({name,email,password:hashedPassword,pic });
-        console.log(result);
         const token =jwt.sign({email:result.email , id:result._id},'test',{expiresIn : "1h"});
 
         res.status(200).json({result:result,token});
@@ -69,9 +68,8 @@ export const allUsers = async (req , res) => {
         ],
       }
         : {};
-
+console.log(req.user);
     const users = await UserModel.find(keyword);
-    console.log(users);
     res.send(users);
 
 }

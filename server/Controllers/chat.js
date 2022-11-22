@@ -12,11 +12,11 @@ export const accessChat = async(req,res) => {
         console.log("UserId param not sent with request");
         return res.sendStatus(400);
     }
-
+    console.log(req.userId );
     var isChat = await ChatModel.find({
         isGroupChat: false,
         $and: [
-            {users:{$elemMatch: {$eq:req.user._id}}},
+            {users:{$elemMatch: {$eq:req.userId}}},
             {users:{$elemMatch: {$eq:userId}}}
         ],
     }).populate("users","-password").populate("latestMessage");
@@ -25,7 +25,8 @@ export const accessChat = async(req,res) => {
         path:"latestMessage.sender",
         select:"name pic email",
     });
-
+    
+    console.log(isChat);
     if(isChat.length > 0){
         res.send(isChat[0]);
     }
@@ -33,12 +34,12 @@ export const accessChat = async(req,res) => {
         var chatData = {
             chatName:"sender",
             isGroupChat:false,
-            users:[req.user._id,userId],
+            users:[req.userId,userId],
         }
         try{
             const createdChat = await ChatModel.create(chatData);
 
-            const fullChat = await Chat.findOne({_id:createdChat._id}).populate("users","-password");
+            const fullChat = await ChatModel.findOne({_id:createdChat._id}).populate("users","-password");
             res.status(200).send(fullChat);
         }catch(err){
             res.status(400);
@@ -50,7 +51,7 @@ export const accessChat = async(req,res) => {
 export const fetchChats = async(req,res) => {
     
     try{
-        ChatModel.find({users:{$elemMatch: {$eq:req.user._id}}}).populate("users","-password")
+        ChatModel.find({users:{$elemMatch: {$eq:req.userId}}}).populate("users","-password")
         .populate("groupAdmin","-password")
         .populate("latestMessage")
         .sort({updatedAt:-1})

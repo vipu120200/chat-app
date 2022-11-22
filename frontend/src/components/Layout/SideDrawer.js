@@ -9,31 +9,53 @@ import ProfileModal from './ProfileModal';
 import {useNavigate} from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { useToast } from '@chakra-ui/react'
-import { searchUser } from '../../action/chat';
+import { findChat } from '../../action/chat';
 import ChatLoading from './ChatLoading';
 import {useDispatch} from 'react-redux';
+import axios from 'axios';
 import UserListItem from '../User/UserListItem';
 
 
 const SideDrawer = () => {
-    const user = JSON.parse(localStorage.getItem('profile'));
+    const loginUser = JSON.parse(localStorage.getItem('profile'));
     const { isOpen, onOpen, onClose } = useDisclosure()
     const [search,setSearch] = useState("");
-    const searchResult = useSelector((state)=>state.chats);
+    const [searchResult, setSearchResult] = useState([]);
     const [loading,setLoading] = useState(false);
     const [loadingChat,setLoadingChat] = useState("");
     const navigate = useNavigate(); 
-     const toast = useToast();
-       const dispatch = useDispatch();
+    const toast = useToast();
+    const dispatch = useDispatch();
+
 
     const logoutHandler =()=>{
         localStorage.removeItem('profile');
         navigate('/');
     }
-    const accessChat =(userId)=>{
+    const accessChat =async (userId)=>{
+        try{
+            setLoading(true);
+            
+            //   const {data} = await  axios.post('/user', {userId},config);
+            dispatch(findChat(userId,navigate));
+
+              setLoading(false);
+              onClose();
+
+        }catch(err)
+        {
+            toast({
+                title:"Error Occured",
+                description:"Failed to load the search results",
+                status:"error",
+                duration:5000,
+                isClosable:true,
+                position:"bottom-left"
+            });
+        }
        
     }
-    const handleSearch =async ()=>{
+    const handleSearch =async  ()=>{
        if(!search){
         toast({
             title:"Please Enter Name or Email of User To Search",
@@ -46,8 +68,18 @@ const SideDrawer = () => {
        }
        try{
         setLoading(true);
-            dispatch(searchUser(search,navigate));
-        setLoading(false);
+        const config = {
+            headers: {
+              Authorization: `Bearer ${loginUser.token}`,
+            },
+          };
+    
+          const { data } = await axios.get(`/user?search=${search}`, config);
+          
+          setLoading(false);
+          setSearchResult(data);
+          console.log(data);
+
        }catch(err){
         toast({
                     title:"Error Occured",
@@ -84,10 +116,10 @@ const SideDrawer = () => {
                 </Menu>
                 <Menu>
                      <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
-                        <Avatar size="sm" cursor="pointer" name={user.name} src={user.pic} />
+                        <Avatar size="sm" cursor="pointer" name={loginUser.name} src={loginUser.pic} />
                     </MenuButton>   
                     <MenuList>
-                        <ProfileModal user={user}>
+                        <ProfileModal user={loginUser}>
                             <MenuItem>My Profile</MenuItem>
                         </ProfileModal>
                         <MenuDivider />
@@ -110,8 +142,12 @@ const SideDrawer = () => {
                 onClick={handleSearch}
                 >Go</Button>
                </Box>
-               {loading ? <ChatLoading /> : (searchResult?.map(user => (
-                <UserListItem key={user._id} user={user} handlefunction={()=>accessChat(user._id)} />
+               {loading ? <ChatLoading /> : (searchResult?.map((user) => (
+                <UserListItem
+                  key={user._id}
+                  user={user}
+                  handleFunction={() => accessChat(user._id)}
+                />
                )))}
             </DrawerBody>
 

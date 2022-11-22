@@ -8,13 +8,14 @@ API.interceptors.request.use((req)=>{
     }
     return req;
 })
+const user = JSON.parse(localStorage.getItem('profile'));
 
 
 
 export const fetchChats =()=>API.get('/api/chat');
 
 //users
-export const searchUser = (search) => API.get(`/user?search=${search}`);
+export const searchUser = (userId) => API.post('/chat', {userId});
 export const signIn = (formData) => API.post('/user/signin', formData);
 export const signUp = (formData) => API.post('/user/signup', formData);
 
