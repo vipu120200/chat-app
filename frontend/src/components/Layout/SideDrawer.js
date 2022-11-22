@@ -1,4 +1,4 @@
-import React,{useState} from 'react';
+    import React,{useState} from 'react';
 import {Tooltip,Box,Text,TabList,TabPanels,Tab,TabPanel, Drawer, DrawerOverlay, DrawerContent, DrawerCloseButton, DrawerHeader, DrawerBody, DrawerFooter, Input} from '@chakra-ui/react';
 import {MenuButton, MenuList, Menu,MenuItem,MenuDivider} from '@chakra-ui/menu';
 import {Avatar} from '@chakra-ui/avatar';
@@ -38,7 +38,7 @@ const SideDrawer = () => {
             
             //   const {data} = await  axios.post('/user', {userId},config);
             dispatch(findChat(userId,navigate));
-
+            setSelectedChat(data);
               setLoading(false);
               onClose();
 
