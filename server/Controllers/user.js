@@ -68,7 +68,7 @@ export const allUsers = async (req , res) => {
         ],
       }
         : {};
-console.log(req.user);
+
     const users = await UserModel.find(keyword);
     res.send(users);
 

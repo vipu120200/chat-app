@@ -1,12 +1,15 @@
-const chats= (state={chats:[],selectedChat:[]},action) =>{
+const chats= (state={chats:[],selectedChat:[],saveChat:[]},action) =>{
     switch (action.type) {
         case 'FETCH_USER_CHAT':
-            // console.log(action.payload);
+
             return { ...state, users:action.payload.data };
             // return {users: [...state.users, ...action.payload.data]};
-        case 'SELECTED_CHAT':
-            // console.log(action.payload);
-            return { ...state, users:action.payload.data };
+        case 'SAVE_CHAT':
+       
+            return { ...state, saveChat:action.payload.data };  
+        case 'SAVE_SELECTED_CHAT':
+       
+            return { ...state, selectedChat:action.payload.data };
         default:
             return state;
     }

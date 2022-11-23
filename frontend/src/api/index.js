@@ -12,7 +12,7 @@ const user = JSON.parse(localStorage.getItem('profile'));
 
 
 
-export const fetchChats =()=>API.get('/api/chat');
+// export const fetchChats =()=>API.get('/api/chat');
 
 //users
 export const searchUser = (userId) => API.post('/chat', {userId});

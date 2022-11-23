@@ -14,6 +14,8 @@ import ChatLoading from './ChatLoading';
 import {useDispatch} from 'react-redux';
 import axios from 'axios';
 import UserListItem from '../User/UserListItem';
+import { ChatState } from "../../Context/ChatProvider";
+import * as api from '../../api';
 
 
 const SideDrawer = () => {
@@ -27,6 +29,19 @@ const SideDrawer = () => {
     const toast = useToast();
     const dispatch = useDispatch();
 
+    const [chats,setChats] = useState("");
+    const [selectedChat,setSelectedChat] = useState("");
+
+    // const {
+    //     setSelectedChat,
+    //     user,
+    //     setUser,
+    //     notification,
+    //     setNotification,
+    //     chats,
+    //     setChats,
+    //   } = ChatState();
+
 
     const logoutHandler =()=>{
         localStorage.removeItem('profile');
@@ -35,12 +50,20 @@ const SideDrawer = () => {
     const accessChat =async (userId)=>{
         try{
             setLoading(true);
+            const config = {
+                headers: {
+                    "Content-type": "application/json",
+                    Authorization: `Bearer ${loginUser.token}`,
+                },
+            };
+            const {data} = await api.searchUser(userId);
             
-            //   const {data} = await  axios.post('/user', {userId},config);
-            dispatch(findChat(userId,navigate));
+            console.log(data);
+            if (!chats.find((c) => c._id === data._id)) setChats([data, ...chats]); dispatch({type:'SAVE_CHAT',payload:chats});
             setSelectedChat(data);
-              setLoading(false);
-              onClose();
+            dispatch({type:'SAVE_SELECTED_CHAT',payload:selectedChat});
+            setLoading(false);
+            onClose();
 
         }catch(err)
         {
@@ -78,7 +101,6 @@ const SideDrawer = () => {
           
           setLoading(false);
           setSearchResult(data);
-          console.log(data);
 
        }catch(err){
         toast({

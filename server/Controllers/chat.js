@@ -6,13 +6,15 @@ import UserModel from "../models/UserModel.js";
 
 export const accessChat = async(req,res) => {
     const {userId} = req.body;
+    console.log('vbnjmk');
+
 
     if(!userId)
     {
         console.log("UserId param not sent with request");
         return res.sendStatus(400);
     }
-    console.log(req.userId );
+
     var isChat = await ChatModel.find({
         isGroupChat: false,
         $and: [
@@ -60,7 +62,7 @@ export const fetchChats = async(req,res) => {
                 path:"latestMessage.sender",
                 select:"name pic email",
             })
-            res.status(200).send(results);
+            res.status(200).send({results});
         })
 
     }catch(err)
