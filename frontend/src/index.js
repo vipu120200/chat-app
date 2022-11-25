@@ -9,19 +9,21 @@ import { configureStore } from "@reduxjs/toolkit";
 import {Provider} from 'react-redux';
 import thunk from 'redux-thunk';
 import reducers from './reducers';
+import ChatProvider from './Context/ChatProvider';
 
-const store = configureStore ({reducers},compose(applyMiddleware(thunk)));
+const store = configureStore ({reducer:reducers},compose(applyMiddleware(thunk)));
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
- 
-    <Provider store={store}>
       <BrowserRouter>
+  <ChatProvider>
+    <Provider store={store}>
         <ChakraProvider>
           <App />
         </ChakraProvider>
-      </BrowserRouter>
     </Provider>
+  </ChatProvider>
+      </BrowserRouter>
 
 );
 

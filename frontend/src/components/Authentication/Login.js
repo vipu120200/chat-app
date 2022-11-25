@@ -5,8 +5,9 @@ import { Input, InputGroup, InputRightElement } from '@chakra-ui/input';
 import React,{useState} from 'react';
 import { useToast } from '@chakra-ui/react';
 import{signin} from '../../action/auth';
-import {useDispatch,useSelector} from 'react-redux';
+import {useDispatch} from 'react-redux';
 import {useNavigate} from 'react-router-dom';
+import { ChatState } from "../../Context/ChatProvider";
 
 
 const Login = () => {
@@ -16,7 +17,8 @@ const Login = () => {
         email:'',
         password:'',
     });
-    const authData = useSelector((state)=>state.authData);
+    const { user } = ChatState();
+
 
     const [show,setShow] = useState(false);
      const toast = useToast();
@@ -43,7 +45,7 @@ const Login = () => {
             return;
         }
           dispatch(signin(formData,history));
-          if(!authData)
+          if(!user)
           {
               toast({
                     title:"Invalid Credentials",

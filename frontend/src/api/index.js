@@ -16,6 +16,7 @@ const user = JSON.parse(localStorage.getItem('profile'));
 
 //users
 export const searchUser = (userId) => API.post('/chat', {userId});
+export const getUsers = () => API.get('/chat');
 export const signIn = (formData) => API.post('/user/signin', formData);
 export const signUp = (formData) => API.post('/user/signup', formData);
 

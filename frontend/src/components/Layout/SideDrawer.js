@@ -7,7 +7,6 @@ import {BellIcon,ChevronDownIcon} from '@chakra-ui/icons';
 import {Button} from '@chakra-ui/button';
 import ProfileModal from './ProfileModal';
 import {useNavigate} from 'react-router-dom';
-import { useSelector } from 'react-redux';
 import { useToast } from '@chakra-ui/react'
 import { findChat } from '../../action/chat';
 import ChatLoading from './ChatLoading';
@@ -16,6 +15,7 @@ import axios from 'axios';
 import UserListItem from '../User/UserListItem';
 import { ChatState } from "../../Context/ChatProvider";
 import * as api from '../../api';
+
 
 
 const SideDrawer = () => {
@@ -29,19 +29,16 @@ const SideDrawer = () => {
     const toast = useToast();
     const dispatch = useDispatch();
 
-    const [chats,setChats] = useState("");
-    const [selectedChat,setSelectedChat] = useState("");
+   
 
-    // const {
-    //     setSelectedChat,
-    //     user,
-    //     setUser,
-    //     notification,
-    //     setNotification,
-    //     chats,
-    //     setChats,
-    //   } = ChatState();
-
+    const {
+        setSelectedChat,
+        user,
+        notification,
+        setNotification,
+        chats,
+        setChats,
+      } = ChatState();
 
     const logoutHandler =()=>{
         localStorage.removeItem('profile');
@@ -52,18 +49,17 @@ const SideDrawer = () => {
             setLoading(true);
             const config = {
                 headers: {
-                    "Content-type": "application/json",
-                    Authorization: `Bearer ${loginUser.token}`,
+                  "Content-type": "application/json",
+                  Authorization: `Bearer ${loginUser.token}`,
                 },
-            };
-            const {data} = await api.searchUser(userId);
-            
-            console.log(data);
-            if (!chats.find((c) => c._id === data._id)) setChats([data, ...chats]); dispatch({type:'SAVE_CHAT',payload:chats});
-            setSelectedChat(data);
-            dispatch({type:'SAVE_SELECTED_CHAT',payload:selectedChat});
-            setLoading(false);
-            onClose();
+              };
+              const {data} = await api.searchUser(userId);
+            //   const { data } = await axios.post(`/chat`, { userId }, config);
+        
+              if (!chats.find((c) => c._id === data._id)) setChats([data, ...chats]);
+              setSelectedChat(data);
+              setLoadingChat(false);
+              onClose();
 
         }catch(err)
         {

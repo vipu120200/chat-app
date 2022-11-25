@@ -61,8 +61,9 @@ export const fetchChats = async(req,res) => {
             results = await UserModel.populate(results,{
                 path:"latestMessage.sender",
                 select:"name pic email",
-            })
-            res.status(200).send({results});
+            });
+            res.send(results);
+            // res.status(200).send({results});
         })
 
     }catch(err)

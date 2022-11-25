@@ -8,36 +8,29 @@ import ChatLoading from "./Layout/ChatLoading";
 // import GroupChatModal from "./miscellaneous/GroupChatModal";
 import { Button } from "@chakra-ui/react";
 import { ChatState } from "../Context/ChatProvider";
-import { useDispatch, useSelector } from "react-redux";
+import * as api from '../api';
+
+
 
 const MyChats = () => {
-  const loginUser = JSON.parse(localStorage.getItem('profile'));
-
   const [loggedUser, setLoggedUser] = useState();
-  const selectedChat                = useSelector((state)=>state.selectedChat || {});
-  const chats                       = useSelector((state)=>state.chats || {});
-  const dispatch                    = useDispatch();
 
-console.log(chats);
-  // const { selectedChat, setSelectedChat, user, chats, setChats } = ChatState();
+  const [selectedChat, setSelectedChat] = useState();
+  const [chats, setChats] = useState();
+let ts ;
 
   const toast = useToast();
 
   const fetchChats = async () => {
     try {
-      const config = {
-        headers: {
-          Authorization: `Bearer ${loginUser.token}`,
-        },
-      };
       
-      const { data } = await axios.get("/chat", config);
-      console.log(data); 
-
-      dispatch({type:'SAVE_CHAT',payload:data})
+      const {data} = await api.getUsers();
+      setChats(data.results);
+      ts=data;
+      console.log(ts);
     } catch (error) {
       toast({
-        title: "Error Occured!",
+        title: "Error Occured new!",
         description: "Failed to Load the chats",
         status: "error",
         duration: 5000,
@@ -82,7 +75,7 @@ console.log(chats);
             rightIcon={<AddIcon />}
           >
             New Group Chat
-          </Button>.
+          </Button>
         {/* </GroupChatModal> */}
       </Box>
       <Box
@@ -95,11 +88,11 @@ console.log(chats);
         borderRadius="lg"
         overflowY="hidden"
       >
-        {chats ? (
+        {/* {ts ? ( */}
           <Stack overflowY="scroll">
-            {chats.map((chat) => (
+            {ts?.map((chat) => (
               <Box
-                onClick={() => dispatch({type:'SAVE_SELECTED_CHAT',payload:chat})}
+                onClick={() => setSelectedChat(chat)}
                 cursor="pointer"
                 bg={selectedChat === chat ? "#38B2AC" : "#E8E8E8"}
                 color={selectedChat === chat ? "white" : "black"}
@@ -124,9 +117,9 @@ console.log(chats);
               </Box>
             ))}
           </Stack>
-        ) : (
+        {/* ) : (
           <ChatLoading />
-        )}
+        )} */}
       </Box>
     </Box>
   );
