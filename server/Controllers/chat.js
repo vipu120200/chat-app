@@ -6,7 +6,6 @@ import UserModel from "../models/UserModel.js";
 
 export const accessChat = async(req,res) => {
     const {userId} = req.body;
-    console.log('vbnjmk');
 
 
     if(!userId)
@@ -28,7 +27,6 @@ export const accessChat = async(req,res) => {
         select:"name pic email",
     });
     
-    console.log(isChat);
     if(isChat.length > 0){
         res.send(isChat[0]);
     }
@@ -80,9 +78,9 @@ export const createGroup = async(req,res) => {
     }
     var users =JSON.parse(req.body.users);
     if(users.length<2){
-        return res.status(400).send({message:"MOre than 2 users required to fom a group"});
+        return res.status(400).send({message:"More than 2 users required to fom a group"});
     }
-    users.push(req.user);
+    users.push(req.userId);
     try{
         const groupChat =  await ChatModel.create({
             chatName:req.body.name,

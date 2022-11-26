@@ -5,29 +5,32 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { getSender } from "../config/ChatLogics";
 import ChatLoading from "./Layout/ChatLoading";
-// import GroupChatModal from "./miscellaneous/GroupChatModal";
 import { Button } from "@chakra-ui/react";
 import { ChatState } from "../Context/ChatProvider";
 import * as api from '../api';
+import GroupChatModal from "./Layout/GroupChatModal";
 
 
 
-const MyChats = () => {
+const MyChats = ({fetchAgain}) => {
   const [loggedUser, setLoggedUser] = useState();
 
-  const [selectedChat, setSelectedChat] = useState();
-  const [chats, setChats] = useState();
-let ts ;
+  // const [selectedChat, setSelectedChat] = useState();
+  // const [chats, setChats] = useState();
 
   const toast = useToast();
+  const {
+    setSelectedChat,
+    selectedChat,
+    chats,
+    setChats,
+  } = ChatState();
 
   const fetchChats = async () => {
     try {
       
-      const {data} = await api.getUsers();
-      setChats(data.results);
-      ts=data;
-      console.log(ts);
+      return await api.getUsers();
+
     } catch (error) {
       toast({
         title: "Error Occured new!",
@@ -41,10 +44,10 @@ let ts ;
   };
 
   useEffect(() => {
-    setLoggedUser(JSON.parse(localStorage.getItem("userInfo")));
-    fetchChats();
-    // eslint-disable-next-line
-  }, []);
+    setLoggedUser(JSON.parse(localStorage.getItem("profile")));
+    fetchChats().then((chatData) =>setChats(chatData.data));
+
+  }, [fetchAgain]);
 
   return (
     <Box
@@ -68,7 +71,7 @@ let ts ;
         alignItems="center"
       >
         My Chats
-        {/* <GroupChatModal> */}
+        <GroupChatModal>
           <Button
             d="flex"
             fontSize={{ base: "17px", md: "10px", lg: "17px" }}
@@ -76,7 +79,7 @@ let ts ;
           >
             New Group Chat
           </Button>
-        {/* </GroupChatModal> */}
+        </GroupChatModal>
       </Box>
       <Box
         d="flex"
@@ -88,9 +91,9 @@ let ts ;
         borderRadius="lg"
         overflowY="hidden"
       >
-        {/* {ts ? ( */}
+        {chats ? (
           <Stack overflowY="scroll">
-            {ts?.map((chat) => (
+            {chats?.map((chat) => (
               <Box
                 onClick={() => setSelectedChat(chat)}
                 cursor="pointer"
@@ -117,9 +120,9 @@ let ts ;
               </Box>
             ))}
           </Stack>
-        {/* ) : (
+          ) : (
           <ChatLoading />
-        )} */}
+        )} 
       </Box>
     </Box>
   );

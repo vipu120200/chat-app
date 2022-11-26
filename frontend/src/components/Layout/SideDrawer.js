@@ -33,9 +33,6 @@ const SideDrawer = () => {
 
     const {
         setSelectedChat,
-        user,
-        notification,
-        setNotification,
         chats,
         setChats,
       } = ChatState();
@@ -54,7 +51,6 @@ const SideDrawer = () => {
                 },
               };
               const {data} = await api.searchUser(userId);
-            //   const { data } = await axios.post(`/chat`, { userId }, config);
         
               if (!chats.find((c) => c._id === data._id)) setChats([data, ...chats]);
               setSelectedChat(data);

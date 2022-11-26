@@ -7,7 +7,7 @@ import { Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHea
 
 const ProfileModal = ({user,children}) => {
     const { isOpen, onOpen, onClose } = useDisclosure()
-
+    const result = user.result ? user.result : user ;
   return (
         <>
         {children ? <span onClick={onOpen}>{children}</span>:(
@@ -20,21 +20,22 @@ const ProfileModal = ({user,children}) => {
         <Modal size="lg" isOpen={isOpen} onClose={onClose} isCentered>
         <ModalOverlay />
         <ModalContent h="410px">
-          <ModalHeader fontFamily={"work sans"} fontSize="40px" display="lfex" justifyContent={"center"}>{user.result.name}</ModalHeader>
+          <ModalHeader fontFamily={"work sans"} fontSize="40px" display="lfex" justifyContent={"center"}>{result.name}</ModalHeader>
           <ModalCloseButton />
           <ModalBody display={"flex"} flexDir="column" alignItems="center" justifyContent="space-between">
              <Image
               borderRadius="full"
               boxSize="150px"
-              src={user.result.pic}
-              alt={user.result.name}
+              src={result.pic}
+              alt={result.name}
             />
             <Text
               fontSize={{ base: "28px", md: "30px" }}
               fontFamily="Work sans"
             >
-              Email: {user.result.email}
+              Email: {result.email}
             </Text>
+            
           </ModalBody>
 
           <ModalFooter>
