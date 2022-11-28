@@ -1,15 +1,13 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
+
 
 const messageModel = mongoose.Schema({
     sender:{
-        type:mongoose.Schema.es.ObjectId,
+        type:mongoose.Schema.Types.ObjectId,
         ref:"User",
     },
     content :{type:String , trim:true},
-    Chat:{
-        type:mongoose.Schema.Types.ObjectId,
-        ref:"Chat",
-    }
+    chat: { type: mongoose.Schema.Types.ObjectId, ref: "Chat" },
 }
 ,
     {

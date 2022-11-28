@@ -86,7 +86,7 @@ export const createGroup = async(req,res) => {
             chatName:req.body.name,
             users:users,
             isGroupChat:true,
-            groupAdmin:req.user
+            groupAdmin:req.userId
         });
         const fullGroupChat = await ChatModel.find({_id:groupChat._id})
         .populate("users","-password")
