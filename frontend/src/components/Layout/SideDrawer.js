@@ -15,7 +15,9 @@ import axios from 'axios';
 import UserListItem from '../User/UserListItem';
 import { ChatState } from "../../Context/ChatProvider";
 import * as api from '../../api';
-
+import { getSender } from '../../config/ChatLogics';
+import NotificationBadge from "react-notification-badge";
+import { Effect } from "react-notification-badge";
 
 
 const SideDrawer = () => {
@@ -28,13 +30,15 @@ const SideDrawer = () => {
     const navigate = useNavigate(); 
     const toast = useToast();
     const dispatch = useDispatch();
-
+    
    
 
     const {
         setSelectedChat,
         chats,
         setChats,
+        notification,
+        setNotification
       } = ChatState();
 
     const logoutHandler =()=>{
@@ -47,7 +51,7 @@ const SideDrawer = () => {
             const config = {
                 headers: {
                   "Content-type": "application/json",
-                  Authorization: `Bearer ${loginUser.token}`,
+                  Authorization: `Bearer ${loginUser.result.token}`,
                 },
               };
               const {data} = await api.searchUser(userId);
@@ -113,7 +117,7 @@ const SideDrawer = () => {
             <Tooltip label="Search Users To Chat" hasArrow placement="bottom-end">
                 <Button variant="ghost" onClick={onOpen}>
                     <i className="fa fa-search"></i>
-                    <Text d={{ base: "none",md:"flex"}} px="4">
+                    <Text display={{ base: "none",md:"flex"}} px="4">
                         Search User
                     </Text>
                 </Button>
@@ -123,17 +127,36 @@ const SideDrawer = () => {
             </Text>
             <div>
                 <Menu>
-                    <MenuButton p={1}>
-                        <BellIcon fontSize="2xl" m={1} />
-                    </MenuButton>
-                    {/* <MenuList></MenuList> */}
+                <MenuButton p={1}>
+                    <NotificationBadge
+                        count={notification.length}
+                        effect={Effect.SCALE}
+                    />
+                    <BellIcon fontSize="2xl" m={1} />
+                </MenuButton>
+                    <MenuList pl={2}>
+              {!notification.length && "No New Messages"}
+              {notification.map((notif) => (
+                <MenuItem
+                  key={notif._id}
+                  onClick={() => {
+                    setSelectedChat(notif.chat);
+                    setNotification(notification.filter((n) => n !== notif));
+                  }}
+                >
+                  {notif.chat.isGroupChat
+                    ? `New Message in ${notif.chat.chatName}`
+                    : `New Message from ${getSender(loginUser, notif.chat.users)}`}
+                </MenuItem>
+              ))}
+            </MenuList>
                 </Menu>
                 <Menu>
                      <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
-                        <Avatar size="sm" cursor="pointer" name={loginUser.name} src={loginUser.pic} />
+                        <Avatar size="sm" cursor="pointer" name={loginUser.result.name} src={loginUser.result.pic} />
                     </MenuButton>   
                     <MenuList>
-                        <ProfileModal user={loginUser}>
+                        <ProfileModal user={loginUser.result}>
                             <MenuItem>My Profile</MenuItem>
                         </ProfileModal>
                         <MenuDivider />

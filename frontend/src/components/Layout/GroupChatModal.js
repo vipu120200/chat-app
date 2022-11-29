@@ -12,13 +12,14 @@
     import { ChatState } from "../../Context/ChatProvider";
 
 
+
 const GroupChatModal = ({children}) => {
     const { isOpen, onOpen, onClose } = useDisclosure();
     const [groupChatName,setGroupChatName] = useState();
     const [selectedUsers,setSelectedUsers] = useState([]);
     const [search,setSearch] = useState("");
     const [searchResult,setSearchResult] = useState([]);
-    const [loading,setLoading] = useState([]);
+    const [loading,setLoading] = useState();
     const loginUser = JSON.parse(localStorage.getItem('profile'));
 
     const {

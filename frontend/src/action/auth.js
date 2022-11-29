@@ -14,11 +14,9 @@ export const signin = (formData,history) =>async (dispatch)=>{
 }
 export const signup = (formData,history) =>async (dispatch)=>{
     try{
-        const {data} = await api.signUp(formData);
-    
-        dispatch({type:'AUTH',data});
-        
-        history('/chat');
+        await api.signUp(formData);
+            
+        history('/');
     }
     catch(err){
         console.log(err.message);

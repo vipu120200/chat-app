@@ -10,7 +10,6 @@ import {
 
 const ScrollableChat = ({ messages }) => {
     const loginUser = JSON.parse(localStorage.getItem('profile'));
-    console.log(messages);
   return (
     <ScrollableFeed>
       {messages &&

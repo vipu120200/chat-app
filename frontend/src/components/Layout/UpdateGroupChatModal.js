@@ -187,14 +187,14 @@ const UpdateGroupChatModal = ({ fetchAgain, setFetchAgain ,fetchMessages}) => {
           <ModalHeader
             fontSize="35px"
             fontFamily="Work sans"
-            d="flex"
+            display="flex"
             justifyContent="center"
           >
             {selectedChat.chatName}
           </ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <Box w="100%" d="flex" flexWrap="wrap" pb={3}>
+            <Box w="100%" display="flex" flexWrap="wrap" pb={3}>
               {selectedChat.users.map((u) => (
                 <UserBadgeItem
                   key={u._id}
@@ -204,7 +204,7 @@ const UpdateGroupChatModal = ({ fetchAgain, setFetchAgain ,fetchMessages}) => {
               ))}
             </Box>
 
-            <FormControl d="flex">
+            <FormControl display="flex">
               <Input
                 placeholder="Chat Name"
                 mb={3}

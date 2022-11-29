@@ -61,14 +61,19 @@ const Signup = () => {
         });
         return;
     }
-    dispatch(signup(formData,history));
-    toast({
+    try {        
+        dispatch(signup(formData,history));
+        toast({
             title:"Registration Succesfull",
             status:"success",
             duration:5000,
             isClosable:true,
             position:"bottom",
         });
+        
+    } catch (error) {
+        
+    }
  }
 
   return (
@@ -97,11 +102,8 @@ const Signup = () => {
         <FormControl id='confirmPassword' isRequired>
             <FormLabel>Confirm Password</FormLabel>
             <InputGroup>
-                <Input type={show ? 'text' :'password'} placeholder="Confirm Your New Password" onChange={ (e) => setFormData({...formData, confirmPassword:e.target.value})} />
-                <InputRightElement width="4.5rem">
-                <Button h="1.7rem" size="sm" onClick={ (e) => setFormData({...formData, password:e.target.value})}>
-                    {show ? "Hide" : "Show"}
-                </Button>    
+                <Input type='password' placeholder="Confirm Your New Password" onChange={ (e) => setFormData({...formData, confirmPassword:e.target.value})} />
+                <InputRightElement width="4.5rem"> 
                 </InputRightElement>
             </InputGroup>
         </FormControl>

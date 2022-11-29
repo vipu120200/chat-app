@@ -8,11 +8,12 @@ import { Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHea
 const ProfileModal = ({user,children}) => {
     const { isOpen, onOpen, onClose } = useDisclosure()
     const result = user.result ? user.result : user ;
+
   return (
         <>
         {children ? <span onClick={onOpen}>{children}</span>:(
             <IconButton 
-            d={{base:"flex"}}
+            display={{base:"flex"}}
             icon={<ViewIcon/>}
             onClick={onOpen}
             />
