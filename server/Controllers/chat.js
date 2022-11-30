@@ -1,5 +1,6 @@
 import ChatModel from "../models/ChatModel.js";
 import UserModel from "../models/UserModel.js";
+import NotificationModel from "../models/NotificationModel.js";
 
 
 
@@ -162,4 +163,30 @@ export const removeFromGroup  = async(req,res) => {
         else{
             res.json(removed);
         }
+}
+
+export const storeNotification  = async(req,res) => {
+    const {chat,users} = req.body;
+    let notification;
+    let notificationExist;
+  
+    users.forEach(async(user)=>{
+        notificationExist =NotificationModel.find({reciever:user._id });
+        if(notificationExist.reciever)
+        {
+            return;
+        }
+        if(user._id != req.userId) {
+            
+            notification = await NotificationModel.create({
+                reciever:user._id,
+                chat:chat,
+                
+            });
+            console.log(notification,'..............'); 
+}
+    });
+    // const data =NotificationModel.find({_id : notification._id });
+    res.json(notification);
+        
 }

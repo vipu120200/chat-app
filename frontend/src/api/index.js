@@ -23,6 +23,7 @@ export const removeUser = (chatId,userId) => API.put('/chat/groupremove', {chatI
 
 export const sendMessage = (content,chatId) => API.post('/message', {content,chatId});
 export const fetchMessages = (chatId) => API.get(`/message/${chatId}`);
+export const storeNotification = (chat,users) => API.post('/chat/notification', {chat,users});
 
 export const getUsers = () => API.get('/chat');
 export const signIn = (formData) => API.post('/user/signin', formData);

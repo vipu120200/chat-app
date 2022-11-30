@@ -1,5 +1,5 @@
 import express from 'express';
-import {accessChat,fetchChats,createGroup,renameGroup,removeFromGroup,addToGroup} from '../Controllers/chat.js';
+import {accessChat,fetchChats,createGroup,renameGroup,storeNotification,removeFromGroup,addToGroup} from '../Controllers/chat.js';
 import auth from '../middleware/auth.js';
 
 
@@ -12,6 +12,7 @@ router.put("/rename",auth, renameGroup);
 router.put("/groupadd",auth, addToGroup);
 router.put("/groupremove",auth, removeFromGroup);
 
+router.post("/notification",auth, storeNotification);
 
 
 

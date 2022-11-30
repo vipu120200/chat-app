@@ -64,7 +64,7 @@ const Signup = () => {
     try {        
         dispatch(signup(formData,history));
         toast({
-            title:"Registration Succesfull",
+            title:"Registration Succesfull You can Login Now`",
             status:"success",
             duration:5000,
             isClosable:true,
