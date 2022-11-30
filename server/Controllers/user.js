@@ -17,9 +17,9 @@ export const signup = async (req , res) => {
         
         if(password !== confirmPassword) return res.status(400).json({message:"Password Do'nt Match"});
         const hashedPassword = await bcrypt.hash(password,12);
-        const result = UserModel.create({name,email,password:hashedPassword,pic });
+        const result =await UserModel.create({name,email,password:hashedPassword,pic });
         const token =jwt.sign({email:result.email , id:result._id},'test',{expiresIn : "1h"});
-
+       
         res.status(200).json({result:result,token});
     }
     catch(err)
@@ -38,7 +38,7 @@ export const signin = async (req , res) => {
         if(!isPasswordCorrect) return res.status(400).json({message:"Invalid Credentials"});
          
         const token =jwt.sign({email:userExist.email , id:userExist._id},'test',{expiresIn : "1h"});
-
+       
         res.status(200).json({result:userExist,token});
     }
     catch(err)

@@ -1,14 +1,15 @@
 import { AddIcon } from "@chakra-ui/icons";
 import { Box, Stack, Text } from "@chakra-ui/layout";
 import { useToast } from "@chakra-ui/toast";
-import axios from "axios";
+import { Avatar } from "@chakra-ui/avatar";
 import { useEffect, useState } from "react";
-import { getSender } from "../config/ChatLogics";
+import { getImage, getSender } from "../config/ChatLogics";
 import ChatLoading from "./Layout/ChatLoading";
 import { Button } from "@chakra-ui/react";
 import { ChatState } from "../Context/ChatProvider";
 import * as api from '../api';
 import GroupChatModal from "./Layout/GroupChatModal";
+import groupImage from "../group.png";
 
 
 
@@ -77,7 +78,7 @@ const MyChats = ({fetchAgain}) => {
             fontSize={{ base: "17px", md: "10px", lg: "17px" }}
             rightIcon={<AddIcon />}
           >
-            New Group Chat
+            Create Group
           </Button>
         </GroupChatModal>
       </Box>
@@ -103,14 +104,38 @@ const MyChats = ({fetchAgain}) => {
                 py={2}
                 borderRadius="lg"
                 key={chat._id}
+               
               >
-                <Text>
+                
+
+<div style={{ display: "flex" }} >
+            {!chat.isGroupChat ? 
+                <Avatar
+                // mt="7px"
+                mr={1}
+                size="sm"
+                cursor="pointer"
+                name={getSender(loggedUser, chat.users)}
+                src= {getImage(loggedUser, chat.users)}
+                /> : 
+                <Avatar
+                // mt="7px"
+                mr={1}
+                size="sm"
+                cursor="pointer"
+                name={chat.chatName}
+                src= {groupImage}
+                /> }
+                <Text mt={1}>
                 {!chat.isGroupChat
-                    ? getSender(loggedUser, chat.users)
+                    ? getSender(loggedUser, chat.users).charAt(0).toUpperCase() + getSender(loggedUser, chat.users).slice(1)
                     : chat.chatName}
                 </Text>
+          </div>
+                  
+
                 {chat.latestMessage && (
-                  <Text fontSize="xs">
+                  <Text fontSize="xs" ml={"36px"}>
                     <b>{chat.latestMessage.sender.name} : </b>
                     {chat.latestMessage.content.length > 50
                       ? chat.latestMessage.content.substring(0, 51) + "..."

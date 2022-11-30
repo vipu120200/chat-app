@@ -3,7 +3,7 @@ import {Tooltip,Box,Text,TabList,TabPanels,Tab,TabPanel, Drawer, DrawerOverlay, 
 import {MenuButton, MenuList, Menu,MenuItem,MenuDivider} from '@chakra-ui/menu';
 import {Avatar} from '@chakra-ui/avatar';
 import { useDisclosure } from '@chakra-ui/hooks'
-import {BellIcon,ChevronDownIcon} from '@chakra-ui/icons';
+import {BellIcon,ChatIcon,ChevronDownIcon} from '@chakra-ui/icons';
 import {Button} from '@chakra-ui/button';
 import ProfileModal from './ProfileModal';
 import {useNavigate} from 'react-router-dom';
@@ -31,8 +31,6 @@ const SideDrawer = () => {
     const toast = useToast();
     const dispatch = useDispatch();
     
-   
-
     const {
         setSelectedChat,
         chats,
@@ -124,6 +122,7 @@ const SideDrawer = () => {
             </Tooltip>
             <Text fontSize="2xl" fontFamily="work sans">
                 Chat App
+                <ChatIcon fontSize="2xl" m={1} />
             </Text>
             <div>
                 <Menu>
@@ -187,13 +186,6 @@ const SideDrawer = () => {
                 />
                )))}
             </DrawerBody>
-
-            {/* <DrawerFooter>
-                <Button variant='outline' mr={3} onClick={onClose}>
-                Cancel
-                </Button>
-                <Button colorScheme='blue'>Save</Button>
-            </DrawerFooter> */}
             </DrawerContent>
         </Drawer>
     </>

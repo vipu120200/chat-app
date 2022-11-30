@@ -114,7 +114,7 @@ const Signup = () => {
             </InputGroup>
         </FormControl>
 
-        <Button colorScheme={"blue"} width="100%" style={{marginTop:15}} onClick={submitHandler}>
+        <Button colorScheme="blue" width="100%" style={{marginTop:15}} onClick={submitHandler}>
             Signup
         </Button>
     </VStack>

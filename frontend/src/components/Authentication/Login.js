@@ -44,26 +44,24 @@ const Login = () => {
             });
             return;
         }
-          dispatch(signin(formData,history));
-          if(!user)
-          {
-              toast({
-                    title:"Invalid Credentials",
-                    status:"danger",
-                    duration:5000,
-                    isClosable:true,
-                    position:"bottom",
-                    });
-          }
-            else{
-              toast({
-                    title:"Login Succesfull",
-                    status:"success",
-                    duration:5000,
-                    isClosable:true,
-                    position:"bottom",
-                    });
-                }
+        try {
+            dispatch(signin(formData,history));
+            toast({
+                  title:"Login Succesfull",
+                  status:"success",
+                  duration:5000,
+                  isClosable:true,
+                  position:"bottom",
+                  });
+        } catch (error) {
+            toast({
+                  title:"Invalid Credentials",
+                  status:"danger",
+                  duration:5000,
+                  isClosable:true,
+                  position:"bottom",
+                  });
+        }
           
     }
    
@@ -86,10 +84,10 @@ const Login = () => {
                </InputGroup>
            </FormControl>
   
-           <Button colorScheme={"blue"} width="100%" style={{marginTop:15}} onClick={submitHandler}>
+           <Button colorScheme="blue" width="100%" style={{marginTop:15}} onClick={submitHandler}>
                Login
            </Button>
-           <Button variant="solid" colorScheme={"red"} width="100%"  onClick={()=>{
+           <Button variant="solid" colorScheme="red" width="100%"  onClick={()=>{
             setFormData({...formData, email:'guest@example.com'});
             setFormData({...formData, password:'123456'});
            }}>
