@@ -43,7 +43,7 @@ const io = new Server(server, {
     cors: {
       origin: "http://localhost:3000",
     },
-}).listen(server);
+});
 
 io.on("connection", (socket) => {
     console.log("Connected to socket.io");
